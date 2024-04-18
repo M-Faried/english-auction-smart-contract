@@ -25,6 +25,12 @@ contract EnglishAuction {
         _;
     }
 
+    modifier requireStarted() {
+        require(started, "Auction has not started");        
+        require(!ended, "Auction has ended");
+        _;
+    }
+
     event Started(uint startTime, uint endTime);
     event Bid(address indexed bidder, uint value);
 
@@ -34,13 +40,11 @@ contract EnglishAuction {
         nftId = _nftId;
     }
 
-    function bid() external payable{
+    function bid() external payable requireStarted {
 
-        require(started, "Auction has not started");
         require(msg.value > highestBid, "Bid price is lower than the current highest bid");
         require(block.timestamp < endTime, "Auction has ended");
-        require(!ended, "Auction has ended");
-        
+                        
         highestBidder = msg.sender;
         highestBid = msg.value;
         allBids[msg.sender] = msg.value;
@@ -61,6 +65,7 @@ contract EnglishAuction {
 
     function end() external onlyOwner {
         // highest bidder receive the itme
+
         // owner recieves ether
     }
 
