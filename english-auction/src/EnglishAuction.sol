@@ -32,6 +32,7 @@ contract EnglishAuction {
 
     event Started(uint startTime, uint endTime);
     event Bid(address indexed bidder, uint value);
+    event Ended(address indexed highestBidder, uint value);
 
     constructor(address _nft, uint _nftId) {
         owner = payable(msg.sender);
@@ -65,6 +66,12 @@ contract EnglishAuction {
 
     function end() external onlyOwner requireStarted {
         require(block.timestamp >= endTime, "Auction has ended");
+
+        ended = true;
+        nft.transferFrom(address(this), highestBidder, nftId);
+        owner.transfer(highestBid);
+
+        emit Ended(highestBidder, highestBid);
     }
 
     function withdraw() external {
