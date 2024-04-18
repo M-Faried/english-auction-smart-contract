@@ -7,7 +7,7 @@ interface IERC721 {
 
 contract EnglishAuction {
 
-    // auction states
+    // Auction states
     bool public started;
     bool public ended;
     uint public endTime;
@@ -25,6 +25,8 @@ contract EnglishAuction {
         _;
     }
 
+    event Started(uint startTime, uint endTime);
+
     constructor(address _nft, uint _nftId){
         owner = payable(msg.sender);
         nft = IERC721(_nft);
@@ -32,13 +34,19 @@ contract EnglishAuction {
     }
 
     function bid() external payable{
-        // validations
+        // validations    
         // highest bidder, all bids
     }
 
-    function start() external onlyOwner {
-        // validations
-        // update the auction state        
+    function start(uint _openingBid, uint _duration) external onlyOwner {
+
+        require(!started, "Auction has already started");        
+
+        highestBid = _openingBid;
+        endTime = block.timestamp + _duration;
+        nft.transferFrom(owner, address(this), nftId);
+        started = true;
+        emit Started(block.timestamp, endTime);
     }
 
     function end() external onlyOwner {
