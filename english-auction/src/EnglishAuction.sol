@@ -6,7 +6,6 @@ interface IERC721 {
 }
 
 contract EnglishAuction {
-
     // Auction states
     bool public started;
     bool public ended;
@@ -26,7 +25,7 @@ contract EnglishAuction {
     }
 
     modifier requireStarted() {
-        require(started, "Auction has not started");        
+        require(started, "Auction has not started");
         require(!ended, "Auction has ended");
         _;
     }
@@ -34,17 +33,19 @@ contract EnglishAuction {
     event Started(uint startTime, uint endTime);
     event Bid(address indexed bidder, uint value);
 
-    constructor(address _nft, uint _nftId){
+    constructor(address _nft, uint _nftId) {
         owner = payable(msg.sender);
         nft = IERC721(_nft);
         nftId = _nftId;
     }
 
     function bid() external payable requireStarted {
-
-        require(msg.value > highestBid, "Bid price is lower than the current highest bid");
+        require(
+            msg.value > highestBid,
+            "Bid price is lower than the current highest bid"
+        );
         require(block.timestamp < endTime, "Auction has ended");
-                        
+
         highestBidder = msg.sender;
         highestBid = msg.value;
         allBids[msg.sender] = msg.value;
@@ -53,8 +54,7 @@ contract EnglishAuction {
     }
 
     function start(uint _openingBid, uint _duration) external onlyOwner {
-
-        require(!started, "Auction has already started");        
+        require(!started, "Auction has already started");
 
         highestBid = _openingBid;
         endTime = block.timestamp + _duration;
@@ -63,14 +63,11 @@ contract EnglishAuction {
         emit Started(block.timestamp, endTime);
     }
 
-    function end() external onlyOwner {
-        // highest bidder receive the itme
-
-        // owner recieves ether
+    function end() external onlyOwner requireStarted {
+        require(block.timestamp >= endTime, "Auction has ended");
     }
 
     function withdraw() external {
         // bidder to receive fund from all the bids state.
     }
-    
 }
