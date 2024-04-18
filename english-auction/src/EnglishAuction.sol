@@ -26,6 +26,7 @@ contract EnglishAuction {
     }
 
     event Started(uint startTime, uint endTime);
+    event Bid(address indexed bidder, uint value);
 
     constructor(address _nft, uint _nftId){
         owner = payable(msg.sender);
@@ -34,8 +35,17 @@ contract EnglishAuction {
     }
 
     function bid() external payable{
-        // validations    
-        // highest bidder, all bids
+
+        require(started, "Auction has not started");
+        require(msg.value > highestBid, "Bid price is lower than the current highest bid");
+        require(block.timestamp < endTime, "Auction has ended");
+        require(!ended, "Auction has ended");
+        
+        highestBidder = msg.sender;
+        highestBid = msg.value;
+        allBids[msg.sender] = msg.value;
+
+        emit Bid(msg.sender, msg.value);
     }
 
     function start(uint _openingBid, uint _duration) external onlyOwner {
