@@ -1,0 +1,3 @@
+[submodule "english-auction/lib/forge-std"]
+	path = english-auction/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
