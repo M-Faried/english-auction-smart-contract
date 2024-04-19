@@ -1,8 +1,6 @@
 # English Auction Smart Contract & GO Rest API
 
-The application is an ethereum solidity smart contract for managing an auction on ERC721 NFT
-
-The accessing and sending transaction to smart contracts is done through a GO rest API.
+The application is an ethereum solidity smart contract for managing an auction on ERC721 NFT. Accessing and sending transaction to the auction smart contract is done through a rest API developed in GO.
 
 # Technologies Used
 
