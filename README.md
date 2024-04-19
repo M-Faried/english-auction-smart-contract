@@ -8,3 +8,7 @@ The application is an ethereum solidity smart contract for managing an auction o
 - **solidity compiler (solc)** for compiling and building the application and for the generation of the ABI (Application Binary Interface).
 - **Geth (abigen)** to generate the go interface file for the smart contract from the ABI.
 - **openzeppelin** for the generation of the ERC721 NFT token.
+
+# Deployment
+
+UNDER CONSTRUCTION
