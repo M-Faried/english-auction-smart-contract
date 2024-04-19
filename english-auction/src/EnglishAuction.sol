@@ -33,6 +33,7 @@ contract EnglishAuction {
     event Started(uint startTime, uint endTime);
     event Bid(address indexed bidder, uint value);
     event Ended(address indexed highestBidder, uint value);
+    event Withdrawn(address indexed bidder, uint value);
 
     constructor(address _nft, uint _nftId) {
         owner = payable(msg.sender);
@@ -76,5 +77,13 @@ contract EnglishAuction {
 
     function withdraw() external {
         // bidder to receive fund from all the bids state.
+
+        uint value = allBids[msg.sender];
+        allBids[msg.sender] = 0;
+        if (value > 0) {
+            payable(msg.sender).transfer(value);
+        }
+
+        emit Withdrawn(msg.sender, value);
     }
 }
