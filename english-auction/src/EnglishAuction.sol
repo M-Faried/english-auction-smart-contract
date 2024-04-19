@@ -76,8 +76,6 @@ contract EnglishAuction {
     }
 
     function withdraw() external {
-        // bidder to receive fund from all the bids state.
-
         uint value = allBids[msg.sender];
         allBids[msg.sender] = 0;
         if (value > 0) {
